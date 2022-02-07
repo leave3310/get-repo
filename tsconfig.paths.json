@@ -7,7 +7,10 @@
             ],
             "@interfaces/*": [
                 "./src/types/*"
-            ]
+            ],
+            "@hooks/*": [
+                "./src/hooks/*"
+            ],
         }
     }
 }

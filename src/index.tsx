@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import UserList from '@components/user-list/UserList';
 import { HashRouter, Routes, Route, Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <HashRouter>

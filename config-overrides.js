@@ -5,7 +5,8 @@ module.exports = function override(config) {
         alias: {
             ...config.alias,
             '@components': path.resolve(__dirname, 'src/components'),
-            '@interfaces': path.resolve(__dirname, '/src/types/')
+            '@interfaces': path.resolve(__dirname, 'src/types/'),
+            '@hooks': path.resolve(__dirname, 'src/hooks/'),
         },
     };
     return config;
