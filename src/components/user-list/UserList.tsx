@@ -14,23 +14,24 @@ const UserList = () => {
         rootMargin: `0px 0px 200px 0px`
     })
 
-    return (<div>
-        AA <br />
-        {list.map((item: any) => (
-            <ListGroup key={item.name}>
-                <ListGroup.Item action href="#link1">
-                    {item.name} {item.stargazers_count}
-                </ListGroup.Item>
-            </ListGroup>
-        ))}
-        {(loading || hasNextPage) && (
-            <ListGroup ref={sentryRef}>
-                <ListGroup.Item>
-                    Loading...
-                </ListGroup.Item>
-            </ListGroup>
-        )}
-    </div>)
+    return (
+        <section>
+            {list.map((item: any) => (
+                <ListGroup key={item.name}>
+                    <ListGroup.Item action href="#link1" className="mb-2">
+                        {item.name} {item.stargazers_count}
+                    </ListGroup.Item>
+                </ListGroup>
+            ))}
+            {(loading || hasNextPage) && (
+                <ListGroup ref={sentryRef}>
+                    <ListGroup.Item>
+                        Loading...
+                    </ListGroup.Item>
+                </ListGroup>
+            )}
+        </section>
+    )
 }
 
 export default UserList
