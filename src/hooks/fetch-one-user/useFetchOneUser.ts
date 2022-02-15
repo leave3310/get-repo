@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux";
+import { rootState } from "@redux/store";
 
 interface repo {
     fullName: string
@@ -9,10 +11,16 @@ interface repo {
 const useFetchOneUser = (RepoName: string) => {
     const [error, setError] = useState<Error>()
     const [oneRepo, setOneRepo] = useState<repo>()
+    const name: string = useSelector((state: rootState) => state.name)
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetch(`https://api.github.com/repos/leave3310/${RepoName}`)
+                const data = await fetch(`https://api.github.com/repos/${name}/${RepoName}`, {
+                    headers: new Headers({
+                        'authorization': process.env.REACT_APP_AUTHORIZATION as string,
+                    })
+                })
                 const body = await data.json()
                 setOneRepo({
                     fullName: body.full_name,
@@ -24,7 +32,7 @@ const useFetchOneUser = (RepoName: string) => {
             }
         }
         fetchData()
-    }, [])
+    }, [name])
 
     return { oneRepo, error }
 }

@@ -11,6 +11,9 @@
             "@hooks/*": [
                 "./src/hooks/*"
             ],
+            "@redux/*": [
+                "./src/redux/*"
+            ],
         }
     }
 }
