@@ -1,54 +1,47 @@
-import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "@redux/store";
-
-interface allUser {
-    repoName: string,
-    starCount: number
-}
+import { setLoading, setList, setHasNextPage, setPage, setError } from "@redux/actions/name";
+import { allUser } from "@interfaces/allUser";
 
 const useAllUser = () => {
-    const [loading, setLoading] = useState<boolean>(false)
-    const [list, setList] = useState<allUser[]>([])
-    const [hasNextPage, setHasNextPage] = useState<boolean>(true)
-    const [error, setError] = useState<Error>()
-    const [page, setPage] = useState<number>(1)
+    const page: number = useSelector((state: rootState) => state.page)
     const name: string = useSelector((state: rootState) => state.name)
+    const list: allUser[] = useSelector((state: rootState) => state.list)
+    const dispatch = useDispatch()
 
     const loadMore = async () => {
-        setLoading(true)
+        dispatch(setLoading(true))
         try {
-            const data = await fetch(`https://api.github.com/users/${name}/repos?per_page=10&sort=created&page=${page}`, {
+            const data = await fetch(`https://api.github.com/users/${name}/repos?sort=created&per_page=10&page=${page}`, {
                 headers: new Headers({
                     'authorization': process.env.REACT_APP_AUTHORIZATION as string,
                 })
             })
             const body = await data.json()
-
             const tmp = body.map((item: any) => {
-                const tmp = {
-                    name: item.name,
-                    stargazers_count: item.stargazers_count
+                const tmp: allUser = {
+                    repoName: item.name,
+                    starCount: item.stargazers_count
                 }
                 return tmp
             })
-            
+
             if (tmp.length === 0) {
-                setHasNextPage(false)
+                dispatch(setHasNextPage(false))
             } else {
-                setList(current => [...current, ...tmp])
-                setPage(page + 1)
-                setHasNextPage(true)
+                dispatch(setList([...list,...tmp]))
+                const newPage = page+1
+                dispatch(setPage(newPage))
             }
         } catch (err: any) {
-            setError(err)
+            dispatch(setError(err))
+
         } finally {
-            setLoading(false)
+            dispatch(setLoading(false))
         }
     }
 
-
-    return { loading, list, hasNextPage, error, loadMore }
+    return { loadMore }
 }
 
 export default useAllUser

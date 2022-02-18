@@ -3,14 +3,19 @@ import { Link } from "react-router-dom";
 import { Navbar, Container, Form, FormControl, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "@redux/store";
-import { changeName } from "@redux/actions/name";
-
-
+import { setName, setHasNextPage, setPage, setList } from "@redux/actions/name"
 
 const Header = () => {
     const name: string = useSelector((state: rootState) => state.name)
     const dispatch = useDispatch()
     const [inputName, setInputName] = useState(name)
+
+    const handleChnage = () => {
+        dispatch(setName(inputName))
+        dispatch(setPage(1))
+        dispatch(setList([]))
+        dispatch(setHasNextPage(true))
+    }
 
     return (
         <Navbar expand="lg" bg="light" className="mb-3">
@@ -26,7 +31,7 @@ const Header = () => {
                             aria-label="Search Name"
                             onChange={(e) => setInputName(e.target.value)}
                         />
-                        <Button variant="outline-success" type="button" onClick={() => dispatch(changeName(inputName))}>Search</Button>
+                        <Button variant="outline-success" type="button" onClick={() => handleChnage()}>Search</Button>
                     </Form>
                 </Navbar.Collapse>
             </Container>

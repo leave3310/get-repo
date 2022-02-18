@@ -3,9 +3,17 @@ import { ListGroup, Container } from 'react-bootstrap'
 import useAllUser from "@hooks/fetch-all-user/useAllUser";
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { rootState } from "@redux/store";
+import { allUser } from "@interfaces/allUser"
+
 
 const UserList = () => {
-    const { loading, list, hasNextPage, error, loadMore } = useAllUser()
+    const { loadMore } = useAllUser()
+    const loading: boolean = useSelector((state: rootState) => state.loading)
+    const hasNextPage: boolean = useSelector((state: rootState) => state.hasNextPage)
+    const error: Error | null = useSelector((state: rootState) => state.error)
+    const list: allUser[] = useSelector((state: rootState) => state.list)
     const [sentryRef] = useInfiniteScroll({
         loading,
         hasNextPage,
@@ -16,21 +24,24 @@ const UserList = () => {
 
     return (
         <Container>
-            {list.map((item: any) => (
-                <ListGroup key={item.name}>
-                    <ListGroup.Item action className="mb-2" as={Link} to={`/repo/${item.name}`} >
-                        {item.stargazers_count} {item.name}
-                    </ListGroup.Item>
-                </ListGroup>
-            ))}
-            {(loading || hasNextPage) && (
+            {
+                list.map((item: allUser) => (
+                    <ListGroup key={item.repoName}>
+                        <ListGroup.Item action className="mb-2" as={Link} to={`/repo/${item.repoName}`} >
+                            {item.starCount} {item.repoName}
+                        </ListGroup.Item>
+                    </ListGroup>
+                ))
+            }
+            {hasNextPage && (
                 <ListGroup ref={sentryRef}>
                     <ListGroup.Item variant="info">
                         Loading...
                     </ListGroup.Item>
                 </ListGroup>
             )}
-        </Container>
+
+        </Container >
 
     )
 }

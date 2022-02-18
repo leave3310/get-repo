@@ -5,11 +5,11 @@
             "@components/*": [
                 "./src/components/*"
             ],
-            "@interfaces/*": [
-                "./src/types/*"
-            ],
             "@hooks/*": [
                 "./src/hooks/*"
+            ],
+            "@interfaces/*": [
+                "./src/interfaces/*"
             ],
             "@redux/*": [
                 "./src/redux/*"
