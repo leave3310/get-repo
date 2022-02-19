@@ -12,7 +12,7 @@ const useFetchOneUser = (RepoName: string) => {
     const [error, setError] = useState<Error>()
     const [oneRepo, setOneRepo] = useState<repo>()
     const name: string = useSelector((state: rootState) => state.name)
-    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -22,6 +22,9 @@ const useFetchOneUser = (RepoName: string) => {
                     })
                 })
                 const body = await data.json()
+                if (!data.ok) {
+                    throw new Error(body.message)
+                }
                 setOneRepo({
                     fullName: body.full_name,
                     description: body.description,
@@ -32,7 +35,7 @@ const useFetchOneUser = (RepoName: string) => {
             }
         }
         fetchData()
-    }, [name])
+    }, [name, RepoName])
 
     return { oneRepo, error }
 }

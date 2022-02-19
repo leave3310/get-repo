@@ -15,10 +15,16 @@ const UserRepo = () => {
     const { oneRepo, error } = useFetchOneUser(repoName as string)
 
     return (
-        <Container>
-            <div>{oneRepo?.fullName}</div>
-            <div>{isNull(oneRepo?.description)}</div>
-            <div>{oneRepo?.starCount}</div>
+        <Container className="">
+            {!!error ? (<div className="text-center h1">{error.message}</div>) :
+                (
+                    <div className="h2">
+                        <div className="mb-3">FullName: {oneRepo?.fullName}</div>
+                        <div className="mb-3">Description: {isNull(oneRepo?.description)}</div>
+                        <div className="mb-3">StarCount: {oneRepo?.starCount}</div>
+                    </div>
+                )}
+
         </Container>
     )
 }
