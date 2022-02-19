@@ -24,6 +24,7 @@ const UserList = () => {
 
     return (
         <Container>
+            {!!error ? (<div className="text-center h1">{error.message}</div>) : (<div />)}
             {
                 list.map((item: allUser) => (
                     <ListGroup key={item.repoName}>
@@ -33,13 +34,13 @@ const UserList = () => {
                     </ListGroup>
                 ))
             }
-            {hasNextPage && (
+            {!!error || (hasNextPage && (
                 <ListGroup ref={sentryRef}>
                     <ListGroup.Item variant="info">
                         Loading...
                     </ListGroup.Item>
                 </ListGroup>
-            )}
+            ))}
 
         </Container >
 

@@ -18,6 +18,9 @@ const useAllUser = () => {
                 })
             })
             const body = await data.json()
+            if (!Array.isArray(body)) {
+                throw new Error(body.message)
+            }
             const tmp = body.map((item: any) => {
                 const tmp: allUser = {
                     repoName: item.name,
@@ -29,8 +32,8 @@ const useAllUser = () => {
             if (tmp.length === 0) {
                 dispatch(setHasNextPage(false))
             } else {
-                dispatch(setList([...list,...tmp]))
-                const newPage = page+1
+                dispatch(setList([...list, ...tmp]))
+                const newPage = page + 1
                 dispatch(setPage(newPage))
             }
         } catch (err: any) {

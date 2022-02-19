@@ -27,7 +27,7 @@ interface Page {
 
 interface SetError {
     type: 'SET_ERROR',
-    payload: Error
+    payload: Error | null
 }
 
 const setLoading = (loading: boolean): Loading => ({
@@ -50,7 +50,7 @@ const setPage = (page: number): Page => ({
     payload: page
 })
 
-const setError = (err: Error): SetError => ({
+const setError = (err: Error | null): SetError => ({
     type: 'SET_ERROR',
     payload: err
 })
