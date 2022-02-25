@@ -10,11 +10,13 @@ interface repo {
 
 const useFetchOneUser = (RepoName: string) => {
     const [error, setError] = useState<Error>()
+    const [loading, setLoading] = useState<boolean>(true)
     const [oneRepo, setOneRepo] = useState<repo>()
     const name: string = useSelector((state: rootState) => state.name)
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true)
             try {
                 const data = await fetch(`https://api.github.com/repos/${name}/${RepoName}`, {
                     headers: new Headers({
@@ -32,12 +34,14 @@ const useFetchOneUser = (RepoName: string) => {
                 })
             } catch (err: any) {
                 setError(err)
+            }finally{
+                setLoading(false)
             }
         }
         fetchData()
     }, [name, RepoName])
 
-    return { oneRepo, error }
+    return { oneRepo, error, loading }
 }
 
 export default useFetchOneUser

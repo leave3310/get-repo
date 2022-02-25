@@ -12,18 +12,22 @@ const UserRepo = () => {
         repoName: string
     }
 
-    const { oneRepo, error } = useFetchOneUser(repoName as string)
+    const { oneRepo, error, loading } = useFetchOneUser(repoName as string)
 
     return (
-        <Container className="">
-            {!!error ? (<div className="text-center h1">{error.message}</div>) :
-                (
-                    <div className="h2">
-                        <div className="mb-3">FullName: {oneRepo?.fullName}</div>
-                        <div className="mb-3">Description: {isNull(oneRepo?.description)}</div>
-                        <div className="mb-3">StarCount: {oneRepo?.starCount}</div>
-                    </div>
-                )}
+        <Container className="h1">
+            {loading && (<div className="text-center bg-info py-5">Loading</div>)}
+            {
+                !!error ? (<div>{error.message}</div>) :
+                    (!loading && (
+                        <div className="h2">
+                            <div className="mb-3">FullName: {oneRepo?.fullName}</div>
+                            <div className="mb-3">Description: {isNull(oneRepo?.description)}</div>
+                            <div className="mb-3">StarCount: {oneRepo?.starCount}</div>
+                        </div>
+                    ))
+            }
+
 
         </Container>
     )
